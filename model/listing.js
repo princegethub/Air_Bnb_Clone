@@ -15,9 +15,8 @@ const listingSchema = mongoose.Schema({
     minlength: 10, // Minimum 10 characters
   },
   image: {
-    type: String,
-    default:
-      "https://www.blackbox.ai/share/65bd4735-5fc2-4895-a8cf-c80f597bc925", // Default image URL
+      url: String,
+      filename: String,
   },
   price: {
     type: Number,

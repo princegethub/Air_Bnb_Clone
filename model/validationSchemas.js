@@ -12,10 +12,10 @@ const listingValidationSchema = Joi.object({
     .max(500)
     .required(),
 
-  image: Joi.string()
-    .default(
-      "https://www.blackbox.ai/share/65bd4735-5fc2-4895-a8cf-c80f597bc925"
-    ),
+    image: Joi.object({         
+      url: Joi.string().required(),
+      filename: Joi.string().required(),
+    }).required(),  
 
   price: Joi.number()
     .min(0)

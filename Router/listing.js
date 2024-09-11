@@ -9,16 +9,18 @@ const { isLoggedIn, isOwner } = require("../middleware");
 const listingController = require("../controllers/listing");
 const multer = require('multer');
 const {storage} = require("../cloudConfig");
+const { validate } = require("../model/review");
 const upload = multer({ storage });
+const {validateSchmea}= require("../model/validationSchemas");
+
+
 
 // Assuming showAllListings handles both GET and POST requests
 router
   .route("/")
   .get(wrapAsync(listingController.index))
-  // .post(wrapAsync(listingController.createListing));
-  .post( upload.single('image'),(req,res)=>{
-    res.send(req.file);
-  })
+  .post(isLoggedIn,upload.single('image'),wrapAsync(listingController.createListing));
+
 
 // New Route
 router.get("/new", isLoggedIn, listingController.renderNewForm);

@@ -2,12 +2,7 @@ const listingModel = require("../model/listing");
 const { validateListing } = require("../model/validationSchemas");
 const expressError = require("../utils/expressError");
 
-
-
-
-module
-
-
+module;
 
 module.exports.index = async (req, res) => {
   let alllistings = await listingModel.find({});
@@ -42,22 +37,39 @@ module.exports.showAllListings = async (req, res, next) => {
 };
 
 module.exports.createListing = async (req, res, next) => {
-  let { title, image, price, description, location, country } = req.body;
+  let { title, price, description, location, country } = req.body;
+
+
+  if (!req.file) {
+    return next(new expressError(400, "Image file is required."));
+  }
+
+ 
+
+ 
+
   price = Number(price);
   let { error } = validateListing({
     title,
-    image,
+    image:{
+      url:req.file.path,
+      filename: req.file.filename
+    },
     price,
     description,
     location,
     country,
   });
+
   if (error) {
-    next(new expressError(400, error.message));
+    return next(new expressError(400, error.message));
   } else {
     const newListing = await listingModel.create({
       title,
-      image,
+      image:{
+        url:req.file.path,
+        filename: req.file.filename
+      },
       price,
       description,
       location,
@@ -66,9 +78,10 @@ module.exports.createListing = async (req, res, next) => {
     });
 
     req.flash("success", "New Listing Created 😎");
-    res.redirect("/listings");
+    return res.redirect("/listings");
   }
 };
+
 
 module.exports.renderEditForm = async (req, res) => {
   const id = req.params.id;
