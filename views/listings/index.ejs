@@ -1,0 +1,28 @@
+<% layout('/layouts/boilearplate') -%>
+<body>
+
+
+
+  <h3 style="margin-top: 10px;">All listings</h3>
+
+
+  <div id="card-continer" class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-1 row-cols-xsm-1">
+  <% alllistings.forEach(listings => {%>
+    <a href="/listings/<%= listings._id %>" style="text-decoration: none;">
+    <div class="card col" style="width: 18rem;">
+      <img src="<%= listings.image  %>" class="card-img-top" alt="listings">
+      <div class="card-img-overlay"></div>
+      <div class="card-body">
+      <b>  <p class="card-text"><%= listings.title %></b>
+        <br>
+       ₹ <%=Number( listings.price).toLocaleString("en-IN") %>/Night </p>
+      </div>
+    </div>
+  </a>
+    <% }); %>
+
+  </div>
+
+
+
+</body>

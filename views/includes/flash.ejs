@@ -1,0 +1,15 @@
+<% if(success.length > 0) {%>
+  
+  <div id="flash-message" class="alert alert-success"  style="width: 450px !important;"  role="alert">
+    <%= success %>
+  </div>
+
+   <% } %>
+
+<% if(error.length > 0) {%>
+  
+  <div id="flash-message" class="alert alert-danger" style="width: 450px !important;" role="alert">
+    <%= error %>
+  </div>
+
+   <% } %>

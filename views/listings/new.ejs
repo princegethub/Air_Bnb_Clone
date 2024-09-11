@@ -1,0 +1,64 @@
+<% layout('/layouts/boilearplate') -%>
+
+  <body>
+    <form action="/listings" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
+      <h5>Create A new listings</h5>
+
+      <div class="form-group">
+        <label for="title" class="form-label"></label>
+        <input type="text" id="title" name="title" class="form-control" required placeholder="Title" />
+        <div class="valid-feedback">
+        Titile Looks Good
+      </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description" class="form-label"></label>
+        <textarea id="description" name="description" class="form-control" required placeholder="Description"
+          rows="3"></textarea>
+        <div class="invalid-feedback">
+          Description should be valid
+        </div>
+      </div>
+
+
+      <div class="form-group mt-3">
+        <label for="image" class="form-label">Upload listing Image</label>
+        <input type="file" id="image" name="image" class="form-control"  placeholder="Upload image" />
+        <div class="invalid-feedback">
+          Plese input the image link
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-4">
+          <label for="price" class="form-label"></label>
+          <input type="number" id="price" name="price" class="form-control" required placeholder="Price" />
+          <div class="invalid-feedback">
+            Price Should be valid
+          </div>
+        </div>
+
+        <div class="form-group col-8">
+          <label for="location" class="form-label"></label>
+          <input type="text" id="location" name="location" class="form-control" required placeholder="Location" />
+          <div class="invalid-feedback">
+            Valid should be valid
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="country" class="form-label"></label>
+        <input type="text" id="country" name="country" class="form-control" required placeholder="Country" />
+        <div class="invalid-feedback">
+          Country should be valid
+        </div>
+      </div>
+
+      <div class="form-group mt-3 mb-3">
+        <input type="submit" value="Submit" class="btn btn-dark" />
+      </div>
+    </form>
+
+
+  </body>
