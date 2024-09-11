@@ -10,7 +10,7 @@
   <% alllistings.forEach(listings => {%>
     <a href="/listings/<%= listings._id %>" style="text-decoration: none;">
     <div class="card col" style="width: 18rem;">
-      <img src="<%= listings.image  %>" class="card-img-top" alt="listings">
+      <img src="<%= listings.image.url  %>" class="card-img-top" alt="listings">
       <div class="card-img-overlay"></div>
       <div class="card-body">
       <b>  <p class="card-text"><%= listings.title %></b>

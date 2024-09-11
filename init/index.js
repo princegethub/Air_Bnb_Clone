@@ -4,12 +4,22 @@ const listing = require("../model/listing");
 const initData = require("./data");
 
 const initDB = async () => {
-await listing.deleteMany({});
+  await listing.deleteMany({});
 
-initData.data = initData.data.map((obj)=>({...obj , owner: "66df5bfd49a709822911f474"}));
+  const updatedListingsData = initData.data.map(listing => {
+    return {
+      ...listing,
+      image: {
+        url: listing.image,          // Original image URL
+        filename: 'listingimage'      // Static filename
+      },
+      owner: "66df5bfd49a709822911f474"  // Add owner directly here
+    };
+  });
 
-await listing.insertMany(initData.data);
-console.log("Data is initialized");
+  // Insert updated listings data
+  await listing.insertMany(updatedListingsData);
+  console.log("Data is initialized");
 };
 
 initDB();
