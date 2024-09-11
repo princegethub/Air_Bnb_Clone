@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV !=  'production') {
+  require('dotenv').config()
+  
+}
+
 const express = require("express");
 const ejs = require("ejs");
 const path = require("path");
@@ -21,7 +26,7 @@ const userRouter = require("./Router/user");
 
 
 const app = express();
-const port = 5000;
+const port = 3000;
 
 
 // Middleware setup

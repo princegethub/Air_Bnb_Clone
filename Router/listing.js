@@ -8,15 +8,16 @@ const { authenticate, authorize } = require("passport");
 const { isLoggedIn, isOwner } = require("../middleware");
 const listingController = require("../controllers/listing");
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const {storage} = require("../cloudConfig");
+const upload = multer({ storage });
 
 // Assuming showAllListings handles both GET and POST requests
 router
   .route("/")
   .get(wrapAsync(listingController.index))
   // .post(wrapAsync(listingController.createListing));
-  .post((req,res)=>{
-    res.send(req.body);
+  .post( upload.single('image'),(req,res)=>{
+    res.send(req.file);
   })
 
 // New Route
