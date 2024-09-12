@@ -39,21 +39,16 @@ module.exports.showAllListings = async (req, res, next) => {
 module.exports.createListing = async (req, res, next) => {
   let { title, price, description, location, country } = req.body;
 
-
   if (!req.file) {
     return next(new expressError(400, "Image file is required."));
   }
 
- 
-
- 
-
   price = Number(price);
   let { error } = validateListing({
     title,
-    image:{
-      url:req.file.path,
-      filename: req.file.filename
+    image: {
+      url: req.file.path,
+      filename: req.file.filename,
     },
     price,
     description,
@@ -66,9 +61,9 @@ module.exports.createListing = async (req, res, next) => {
   } else {
     const newListing = await listingModel.create({
       title,
-      image:{
-        url:req.file.path,
-        filename: req.file.filename
+      image: {
+        url: req.file.path,
+        filename: req.file.filename,
       },
       price,
       description,
@@ -82,7 +77,6 @@ module.exports.createListing = async (req, res, next) => {
   }
 };
 
-
 module.exports.renderEditForm = async (req, res) => {
   const id = req.params.id;
   const listing = await listingModel.findById(id);
@@ -94,8 +88,21 @@ module.exports.renderEditForm = async (req, res) => {
 };
 
 module.exports.updateListing = async (req, res, next) => {
-  let { country, location, title, price, image, description } = req.body;
+  let { country, location, title, price, description } = req.body;
+  let image;
+
+  if (req.file) {
+    image = {
+      url: req.file.path,
+      filename: req.file.filename,
+    };
+  } else {
+    const listing = await listingModel.findById(req.params.id);
+    image = listing.image;
+  }
+
   price = Number(price);
+
   let { error } = validateListing({
     country,
     location,

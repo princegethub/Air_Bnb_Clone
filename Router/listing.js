@@ -28,7 +28,10 @@ router.get("/new", isLoggedIn, listingController.renderNewForm);
 router
   .route("/:id")
   .get(wrapAsync(listingController.showAllListings))
-  .put(isLoggedIn, isOwner, wrapAsync(listingController.updateListing))
+  .put(isLoggedIn, isOwner,upload.single('image'), wrapAsync(listingController.updateListing))
+    // .put((req,res)=>{
+    //   res.send(req.file);
+    // })
   .delete(isLoggedIn, isOwner, wrapAsync(listingController.deleteListing));
 
 // edit page

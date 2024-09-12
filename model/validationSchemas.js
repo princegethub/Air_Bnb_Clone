@@ -13,9 +13,9 @@ const listingValidationSchema = Joi.object({
     .required(),
 
     image: Joi.object({         
-      url: Joi.string().required(),
-      filename: Joi.string().required(),
-    }).required(),  
+      url: Joi.string(),
+      filename: Joi.string(),
+    }),  
 
   price: Joi.number()
     .min(0)
