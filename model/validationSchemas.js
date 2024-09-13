@@ -23,6 +23,14 @@ const listingValidationSchema = Joi.object({
 
   location: Joi.string().required(),
   country: Joi.string().required(),
+    // Geometry validation
+    geometry: Joi.object({
+      type: Joi.string().valid('Point').required(),
+      coordinates: Joi.array()
+        .items(Joi.number())
+        .length(2)
+        .required()
+    })
 });
 
 const reviewValidationSchema = Joi.object({

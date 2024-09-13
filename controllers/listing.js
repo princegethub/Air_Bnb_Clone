@@ -1,8 +1,10 @@
 const listingModel = require("../model/listing");
 const { validateListing } = require("../model/validationSchemas");
 const expressError = require("../utils/expressError");
+const mbxGeocaoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapToken = process.env.MAP_BOX;
+const geocodingClient = mbxGeocaoding({ accessToken: mapToken });
 
-module;
 
 module.exports.index = async (req, res) => {
   let alllistings = await listingModel.find({});
@@ -39,11 +41,20 @@ module.exports.showAllListings = async (req, res, next) => {
 module.exports.createListing = async (req, res, next) => {
   let { title, price, description, location, country } = req.body;
 
+  // Geocode location using forwardGeocode
+  let response = await geocodingClient.forwardGeocode({
+    query: location,
+    limit: 1
+  }).send();
+
+  // Check if an image file is present
   if (!req.file) {
     return next(new expressError(400, "Image file is required."));
   }
 
   price = Number(price);
+
+  // Validate listing input
   let { error } = validateListing({
     title,
     image: {
@@ -54,11 +65,17 @@ module.exports.createListing = async (req, res, next) => {
     description,
     location,
     country,
+    geometry: {
+      type: 'Point',
+      coordinates: response.body.features[0].geometry.coordinates
+    }
   });
 
+  // If there's a validation error
   if (error) {
     return next(new expressError(400, error.message));
   } else {
+    // Create new listing with the geometry field
     const newListing = await listingModel.create({
       title,
       image: {
@@ -70,12 +87,19 @@ module.exports.createListing = async (req, res, next) => {
       location,
       country,
       owner: req.user._id,
+      geometry: {
+        type: 'Point',
+        coordinates: response.body.features[0].geometry.coordinates
+      }
     });
+
+    console.log(newListing);
 
     req.flash("success", "New Listing Created 😎");
     return res.redirect("/listings");
   }
 };
+
 
 module.exports.renderEditForm = async (req, res) => {
   const id = req.params.id;
@@ -84,7 +108,11 @@ module.exports.renderEditForm = async (req, res) => {
     req.flash("error", "Listing you Requested for does not exist ");
     return res.redirect("/listings");
   }
-  res.render("listings/edit", { listing });
+  let originalUrl = listing.image.url;
+  originalUrl = originalUrl.replace("/upload", "/upload/w_150");
+
+
+  res.render("listings/edit", { listing, originalUrl });
 };
 
 module.exports.updateListing = async (req, res, next) => {

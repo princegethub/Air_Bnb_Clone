@@ -23,7 +23,12 @@
       </div>
 
       <div class="form-group mb-3">
-        <label for="image" class="form-label">Chhose Image</label>
+       Your Listing Image: <br>
+        <img src="<%= originalUrl %>"   alt="Old_listing Image">
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="image" class="form-label">Upload New Image</label>
         <input type="file" id="image"  name="image" class="form-control" value="<%= listing.image %>" />
       </div>
       <div class="row">
