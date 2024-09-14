@@ -14,7 +14,7 @@ const wrapAsync = require("./utils/wrapAsync");
 const expressError = require("./utils/expressError");
 const session = require("express-session");
 const flash = require("connect-flash");
- 
+const MongoStore = require('connect-mongo');
 const User = require("./model/user-model");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -23,6 +23,7 @@ const { userInfo } = require("os");
 const listingRouter = require("./Router/listing");
 const reviewRouter = require("./Router/review");
 const userRouter = require("./Router/user");
+const { error } = require('console');
 
 
 const app = express();
@@ -39,17 +40,30 @@ app.engine("ejs", ejsMate);
 
 
 
+const store = MongoStore.create({
+  mongoUrl: process.env.ATLAS_CONNECTION,
+  crypto: {
+    secret: process.env.SECRET
+  },
+  touchAfter: 24 * 60 * 60,
+  
+})
+
+store.on("error", () => {
+  console.log("session store error", error);
+})
+
 const sessionOption = {
+  store,
   resave: false,
   saveUninitialized: true,
-  secret: "myscreat", 
+  secret: process.env.SECRET, 
   cookie: {
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
   },
 };
-
 
 
 
