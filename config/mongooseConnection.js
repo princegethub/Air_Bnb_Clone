@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const debug = require("debug")("development:mongoose");
 mongoose
-  .connect("mongodb://localhost:27017/airbnb")
+  .connect(process.env.ATLAS_CONNECTION)
   .then(() => {
     debug("Connected Succesfully");
   })

@@ -15,8 +15,8 @@ const listingSchema = mongoose.Schema({
     minlength: 10, // Minimum 10 characters
   },
   image: {
-      url: String,
-      filename: String,
+    url: String,
+    filename: String,
   },
   price: {
     type: Number,
@@ -33,34 +33,32 @@ const listingSchema = mongoose.Schema({
     required: true, // Country required hai
     trim: true,
   },
-  review:[{
-    type : mongoose.Schema.Types.ObjectId,
-    ref: "review"
-  }],
+  review: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "review",
+    },
+  ],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User",
   },
   geometry: {
     type: {
       type: String, // Don't do `{ location: { type: String } }`
-      enum: ['Point'], // 'location.type' must be 'Point'
-      required: true
+      enum: ["Point"], // 'location.type' must be 'Point'
     },
     coordinates: {
       type: [Number],
-      required: true
-    }
+      required: true,
+    },
   },
-
 });
 
 listingSchema.post("findOneAndDelete", async (listing) => {
   if (listing) {
     try {
-
       await Reviews.deleteMany({ _id: { $in: listing.review } });
-
     } catch (error) {
       console.error("Error deleting reviews:", error); // Error handling
     }
@@ -68,7 +66,5 @@ listingSchema.post("findOneAndDelete", async (listing) => {
     console.log("No listing found to delete reviews for.");
   }
 });
-
-
 
 module.exports = mongoose.model("listing", listingSchema);

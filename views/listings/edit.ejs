@@ -1,6 +1,5 @@
 <% layout('/layouts/boilearplate') -%>
 
-  <body>
     <form style="margin-top: 10px" novalidate enctype="multipart/form-data" class="needs-validation" action="/listings/<%= listing._id %>?_method=PUT "
       method="post">
       <h5 style="margin-bottom: 20px">Edit Listing</h5>
@@ -64,4 +63,3 @@
           <input type="submit" value="Update Listing" class="btn btn-success" />
         </div>
     </form>
-  </body>
